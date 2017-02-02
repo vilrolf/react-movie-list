@@ -17,15 +17,12 @@ const propTypes = {
 };
 
 class HeaderButtons extends React.Component {
-  changeSortedBy(e){
-    console.log(e.target.value);
-
-  }
 
   render() {
-    const { view, listClickHandler, gridClickHandler, sortedBy } = this.props;
-    const { order, sortingMethod, sortClickHandler, shuffleClickHandler } = this.props;
+    const { view, listClickHandler, gridClickHandler} = this.props;
+    const { order, sortingMethod, sortClickHandler, shuffleClickHandler, onSelectChange } = this.props;
     const { refreshClickHandlder } = this.props;
+
 
     return (
       <header>
@@ -40,9 +37,11 @@ class HeaderButtons extends React.Component {
           />
         </div>
         <div className = "abs-right">
-          <select onChange={this.changeSortedBy} >
-            <option value="timestamp">timestamp</option>
-            <option value="title">title</option>
+          <select onChange={onSelectChange.bind(this)} >
+            <option value="id">Time added</option>
+            <option value="Title">Title</option>
+            <option value="imdbRating">Rating</option>
+            <option value="Year">Year</option>
 
           </select>
           <SortButton

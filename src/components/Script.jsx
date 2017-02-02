@@ -16,7 +16,7 @@ class RobotMasterList extends React.Component {
         super(props);
 
         this.state = {
-            sortedBy: 'timestamp',
+            sortedBy: 'id',
             error: null,
             removedMovies: [],
             movies: [],
@@ -35,6 +35,8 @@ class RobotMasterList extends React.Component {
         this.toggleList = this.toggleList.bind(this);
         this.refresh = this.refresh.bind(this);
         this.selectSeries = this.selectSeries.bind(this);
+
+
     }
 
     toggleSort() {
@@ -45,8 +47,12 @@ class RobotMasterList extends React.Component {
                 return 1;
             return 0;
         }
-        const sortAsc = (a, b) => parseInt(a.id, 10) - parseInt(b.id, 10);
-        const sortDesc = (a, b) => parseInt(b.id, 10) - parseInt(a.id, 10);
+
+        const sortedBy = this.state.sortedBy;
+        console.log("sortedBy", sortedBy);
+
+        const sortAsc = (a, b) => parseInt(a[sortedBy], 10) - parseInt(b[sortedBy], 10);
+        const sortDesc = (a, b) => parseInt(b[sortedBy], 10) - parseInt(a[sortedBy], 10);
 
         this.setState({
             order: (this.state.order === 'asc' ? 'desc' : 'asc'),
@@ -187,8 +193,13 @@ class RobotMasterList extends React.Component {
             movies: shuffle(this.state.movies),
         });
     }
-    selectSort(e){
-        console.log(e);
+    onSelectChange(e){
+        console.log(e.target.value);
+        this.setState({sortedBy: e.target.value});
+
+
+       // console.log("e",e);
+       // console.log("e.target",e.target);
     }
 
     render() {
@@ -205,7 +216,7 @@ class RobotMasterList extends React.Component {
                     sortClickHandler={this.toggleSort}
                     shuffleClickHandler={this.sortShuffle}
                     refreshClickHandlder={this.refresh}
-                    selectClickHanlder={this.selectSort}
+                    onSelectChange={this.onSelectChange}
                 />
                 <div className="dropdown-spacer" style={{height: 10}}/>
                 <h1 class="error"> {error} </h1>
