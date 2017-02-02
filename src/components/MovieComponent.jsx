@@ -13,7 +13,7 @@ const propTypes = {
 class MovieComponent extends React.Component {
 
   render() {
-    const { view, imdbID, Title, Poster, sprite1, Year, imdbRating } = this.props;
+    const { view, imdbID, Title, Poster, Year, imdbRating } = this.props;
     const listClass = `list-item card ${view}`;
     const style = { zIndex: 100 - this.props.index};
 

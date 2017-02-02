@@ -42,6 +42,7 @@ class RobotMasterList extends React.Component {
     }
 
     sort(method) {
+        //TODO fix sorting with strings
         console.log("this.state", this.state);
         function compare(a, b) {
             if (a.Title < b.Title)
@@ -160,6 +161,7 @@ class RobotMasterList extends React.Component {
             [dest]: destRobotMasters,
             inProgress: true,
         });
+        this.save();
     }
 
     renderRobotMasters() {
@@ -244,7 +246,11 @@ class RobotMasterList extends React.Component {
                 />
                 <div className="dropdown-spacer" style={{height: 10}}/>
                 <h1 class="error"> {error} </h1>
-                <input placeholder="Enter a movie" className="new" onKeyPress={this.createNew.bind(this)}/>
+                <input
+                    type="text"
+                    placeholder="Enter a movie"
+                    className="input"
+                    onKeyPress={this.createNew.bind(this)}/>
                 <ul>
                     <FlipMove
                         staggerDurationBy="30"

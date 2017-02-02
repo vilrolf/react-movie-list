@@ -37,7 +37,7 @@ class HeaderButtons extends React.Component {
           />
         </div>
         <div className = "abs-right">
-          <select onChange={onSelectChange} >
+          <select onChange={onSelectChange}  className="Dropdown">
             <option value="id">Time added</option>
             <option value="Title">Title</option>
             <option value="imdbRating">Rating</option>
