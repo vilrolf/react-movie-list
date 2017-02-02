@@ -10,28 +10,26 @@ const propTypes = {
   weakness: PropTypes.string,
 };
 
-class RobotMaster extends React.Component {
+class MovieComponent extends React.Component {
   render() {
-    const { view, id, name, avatar, sprite1, weapon, weakness } = this.props;
+    const { view, imdbID, Title, Poster, sprite1, Year, imdbRating } = this.props;
     const listClass = `list-item card ${view}`;
     const style = { zIndex: 100 - this.props.index};
 
     return (
-      <li id={id} className={listClass} style={style}>
+      <li id={imdbID} className={listClass} style={style}>
         <span>
           <div className="robot-mug">
-            <img src={avatar}/>
-            <h1 className="robot-name">{name}</h1>                                   
+            <img src={Poster}/>
           </div>          
           <div className="robot-info">            
-            <h2 className="robot-weapon">Weapon</h2>
-            <div>{weapon}</div>            
-            <h2 className="robot-weakness">Weakness</h2>
-            <div>{weakness}</div>
+            <h2 className="robot-weapon">Year</h2>
+            <div>{Year}</div>
+            <h2 className="robot-weakness">Rating</h2>
+            <div>{imdbRating}</div>
           </div>
           <div className="robot-other">
-            <img className="img-sprite" src={sprite1} />
-            <h1 className="robot-serial">DWN {id}</h1>   
+            <h1 className="robot-name">{Title}</h1>
           </div>
           <button onClick={this.props.clickHandler}>
             <i className="fa fa-close"/>
@@ -43,6 +41,6 @@ class RobotMaster extends React.Component {
   }
 }
 
-RobotMaster.PropTypes = propTypes;
+MovieComponent.PropTypes = propTypes;
 
-export default RobotMaster;
+export default MovieComponent;

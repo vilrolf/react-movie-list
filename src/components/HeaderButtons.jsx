@@ -17,8 +17,13 @@ const propTypes = {
 };
 
 class HeaderButtons extends React.Component {
+  changeSortedBy(e){
+    console.log(e.target.value);
+
+  }
+
   render() {
-    const { view, listClickHandler, gridClickHandler } = this.props;
+    const { view, listClickHandler, gridClickHandler, sortedBy } = this.props;
     const { order, sortingMethod, sortClickHandler, shuffleClickHandler } = this.props;
     const { refreshClickHandlder } = this.props;
 
@@ -35,6 +40,11 @@ class HeaderButtons extends React.Component {
           />
         </div>
         <div className = "abs-right">
+          <select onChange={this.changeSortedBy} >
+            <option value="timestamp">timestamp</option>
+            <option value="title">title</option>
+
+          </select>
           <SortButton
             clickHandler = {sortClickHandler}
             order = {order}
