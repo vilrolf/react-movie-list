@@ -110,11 +110,12 @@ class RobotMasterList extends React.Component {
             enterLeaveAnimation: 'accordianHorizontal',
         });
     }
+    save(){
+        localStorage.setItem("movies", JSON.stringify(this.state.movies));
+    }
 
     refresh() {
-        localStorage.setItem("movies", JSON.stringify(this.state.movies));
-        console.log("this.state", this.state);
-        console.log(localStorage.movies);
+        this.save();
         //this.getData();
     }
 
@@ -143,13 +144,11 @@ class RobotMasterList extends React.Component {
                                 console.log(res.data);
                             } catch (error) {
                                 console.log(error.error);
-
                             }
                         });
                 }
             }
         }
-
     }
 
     componentWillUnmount() {
@@ -214,7 +213,7 @@ class RobotMasterList extends React.Component {
                         //   this.setState({error: res.data.Error});
                         // }
 
-
+                        this.save();
                     });
             } catch (error) {
                 this.setState({error: "Something went wrong!"});
