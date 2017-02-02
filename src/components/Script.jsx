@@ -35,11 +35,12 @@ class RobotMasterList extends React.Component {
         this.toggleList = this.toggleList.bind(this);
         this.refresh = this.refresh.bind(this);
         this.selectSeries = this.selectSeries.bind(this);
-
+        this.onSelectChange = this.onSelectChange.bind(this);
+        this.sort = this.sort.bind(this);
 
     }
-
-    toggleSort() {
+    sort(method){
+        console.log("this.state", this.state);
         function compare(a,b) {
             if (a.Title < b.Title)
                 return -1;
@@ -47,20 +48,41 @@ class RobotMasterList extends React.Component {
                 return 1;
             return 0;
         }
+        let sortedBy = "";
+        let order = "";
+        if(method){
+            if(method === 'asc' || method === 'desc'){
+                order = method;
+                sortedBy = this.state.sortedBy;
+                this.setState({order: order});
+            } else {
+                sortedBy = method;
 
-        const sortedBy = this.state.sortedBy;
+                order = this.state.order;
+                this.setState({sortedBy: method});
+            }
+        } else {
+            sortedBy = this.state.sortedBy;
+            order = this.state.order;
+        }
+
         console.log("sortedBy", sortedBy);
+        console.log("order:", this.state.order);
 
-        const sortAsc = (a, b) => parseInt(a[sortedBy], 10) - parseInt(b[sortedBy], 10);
-        const sortDesc = (a, b) => parseInt(b[sortedBy], 10) - parseInt(a[sortedBy], 10);
-
+        const sortAsc = (a, b) => parseFloat(a[sortedBy]) - parseFloat(b[sortedBy]);
+        const sortDesc = (a, b) => parseFloat(b[sortedBy]) - parseFloat(a[sortedBy]);
         this.setState({
-            order: (this.state.order === 'asc' ? 'desc' : 'asc'),
-            sortingMethod: 'chronological',
             movies: this.state.movies.sort(
-                this.state.order === 'asc' ? sortDesc : sortAsc)
-
+                order === 'asc' ? sortDesc : sortAsc)
         });
+    }
+
+    toggleSort() {
+        console.log("toggle sort");
+        this.setState({
+            sortingMethod: 'chronological',
+        });
+        this.sort((this.state.order === 'asc' ? 'desc' : 'asc'));
     }
 
     selectSeries(e) {
@@ -87,6 +109,7 @@ class RobotMasterList extends React.Component {
     }
 
     refresh() {
+        console.log("this.state", this.state);
         this.getData();
     }
 
@@ -173,10 +196,12 @@ class RobotMasterList extends React.Component {
                             res.data.id = Date.now();
                             this.setState({movies: this.state.movies.concat([res.data])});
                             console.log(this.state.movies);
+                        this.sort();
                         //}else {
                          //   console.log("error!",res.data);
                          //   this.setState({error: res.data.Error});
                        // }
+
 
                     });
             } catch(error){
@@ -194,9 +219,11 @@ class RobotMasterList extends React.Component {
         });
     }
     onSelectChange(e){
+        console.log("this.state", this.state);
         console.log(e.target.value);
-        this.setState({sortedBy: e.target.value});
-
+       // this.setState({sortedBy: e.target.value});
+        //console.log("sortedByState",this.state.sortedBy);
+        this.sort(e.target.value);
 
        // console.log("e",e);
        // console.log("e.target",e.target);
