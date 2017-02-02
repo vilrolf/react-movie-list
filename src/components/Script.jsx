@@ -124,30 +124,14 @@ class RobotMasterList extends React.Component {
     }
 
     getData() {
+        console.log(typeof (Storage));
         if (typeof(Storage) !== "undefined") {
             if (localStorage.movies) {
                 this.setState({movies: JSON.parse(localStorage.movies)});
-            } else {
-                const movieNames = ['frozen', 'iron man', 'the prestige', 'Rain man'];
 
-                const newMovies = [];
-                for (let i = 0; i < movieNames.length; i++) {
-                    if (i === movieNames.length) { // lets test with saving props over and overagain first
-
-                    }
-                    axios.get(`https://www.omdbapi.com/?t=` + movieNames[i])
-                        .then(res => {
-                            try {
-                                res.data.id = Date.now();
-                                newMovies.push(res.data);
-                                this.setState({movies: newMovies});
-                                console.log(res.data);
-                            } catch (error) {
-                                console.log(error.error);
-                            }
-                        });
-                }
             }
+        } else {
+            console.log("oh boiii! ");
         }
     }
 
