@@ -29,6 +29,7 @@ class RobotMasterList extends React.Component {
             inProgress: false,
         };
 
+
         this.sortShuffle = this.sortShuffle.bind(this);
         this.toggleSort = this.toggleSort.bind(this);
         this.toggleGrid = this.toggleGrid.bind(this);
@@ -39,19 +40,21 @@ class RobotMasterList extends React.Component {
         this.sort = this.sort.bind(this);
 
     }
-    sort(method){
+
+    sort(method) {
         console.log("this.state", this.state);
-        function compare(a,b) {
+        function compare(a, b) {
             if (a.Title < b.Title)
                 return -1;
             if (a.Title > b.Title)
                 return 1;
             return 0;
         }
+
         let sortedBy = "";
         let order = "";
-        if(method){
-            if(method === 'asc' || method === 'desc'){
+        if (method) {
+            if (method === 'asc' || method === 'desc') {
                 order = method;
                 sortedBy = this.state.sortedBy;
                 this.setState({order: order});
@@ -109,8 +112,10 @@ class RobotMasterList extends React.Component {
     }
 
     refresh() {
+        localStorage.setItem("movies", JSON.stringify(this.state.movies));
         console.log("this.state", this.state);
-        this.getData();
+        console.log(localStorage.movies);
+        //this.getData();
     }
 
     componentDidMount() {
@@ -118,27 +123,33 @@ class RobotMasterList extends React.Component {
     }
 
     getData() {
+        if (typeof(Storage) !== "undefined") {
+            if (localStorage.movies) {
+                this.setState({movies: JSON.parse(localStorage.movies)});
+            } else {
+                const movieNames = ['frozen', 'iron man', 'the prestige', 'Rain man'];
 
-        const movieNames = ['frozen','iron man', 'the prestige','Rain man'];
-
-        const newMovies = [];
-        for(let i = 0; i < movieNames.length; i++){
-            if(i === movieNames.length) { // lets test with saving props over and overagain first
-
-            }
-            axios.get(`https://www.omdbapi.com/?t=` + movieNames[i])
-                .then(res => {
-                    try{
-                        res.data.id = Date.now();
-                        newMovies.push(res.data);
-                        this.setState({movies: newMovies});
-                        console.log(res.data);
-                    } catch(error){
-                        console.log(error.error);
+                const newMovies = [];
+                for (let i = 0; i < movieNames.length; i++) {
+                    if (i === movieNames.length) { // lets test with saving props over and overagain first
 
                     }
-                });
+                    axios.get(`https://www.omdbapi.com/?t=` + movieNames[i])
+                        .then(res => {
+                            try {
+                                res.data.id = Date.now();
+                                newMovies.push(res.data);
+                                this.setState({movies: newMovies});
+                                console.log(res.data);
+                            } catch (error) {
+                                console.log(error.error);
+
+                            }
+                        });
+                }
+            }
         }
+
     }
 
     componentWillUnmount() {
@@ -183,29 +194,30 @@ class RobotMasterList extends React.Component {
             );
         });
     }
-    createNew(e){
+
+    createNew(e) {
         this.setState({error: null});
         if (e.which === 13) {
             // finding the movie on omdb.com
-            try{
+            try {
                 axios.get(`https://www.omdbapi.com/?t=` + e.target.value)
                     .then(res => {
-                        console.log("response",res.data.response);
+                        console.log("response", res.data.response);
                         //if(res.data.response === "True") {
-                            console.log(res.data);
-                            res.data.id = Date.now();
-                            this.setState({movies: this.state.movies.concat([res.data])});
-                            console.log(this.state.movies);
+                        console.log(res.data);
+                        res.data.id = Date.now();
+                        this.setState({movies: this.state.movies.concat([res.data])});
+                        console.log(this.state.movies);
                         this.sort();
                         //}else {
-                         //   console.log("error!",res.data);
-                         //   this.setState({error: res.data.Error});
-                       // }
+                        //   console.log("error!",res.data);
+                        //   this.setState({error: res.data.Error});
+                        // }
 
 
                     });
-            } catch(error){
-                this.setState({error:"Something went wrong!"});
+            } catch (error) {
+                this.setState({error: "Something went wrong!"});
                 console.log(error);
             }
             e.target.value = "";
@@ -213,20 +225,22 @@ class RobotMasterList extends React.Component {
     }
 
     sortShuffle() {
+
         this.setState({
             sortingMethod: 'shuffle',
             movies: shuffle(this.state.movies),
         });
     }
-    onSelectChange(e){
+
+    onSelectChange(e) {
         console.log("this.state", this.state);
         console.log(e.target.value);
-       // this.setState({sortedBy: e.target.value});
+        // this.setState({sortedBy: e.target.value});
         //console.log("sortedByState",this.state.sortedBy);
         this.sort(e.target.value);
 
-       // console.log("e",e);
-       // console.log("e.target",e.target);
+        // console.log("e",e);
+        // console.log("e.target",e.target);
     }
 
     render() {
@@ -247,7 +261,7 @@ class RobotMasterList extends React.Component {
                 />
                 <div className="dropdown-spacer" style={{height: 10}}/>
                 <h1 class="error"> {error} </h1>
-                <input className="new" onKeyPress={this.createNew.bind(this)}/>
+                <input placeholder="Enter a movie" className="new" onKeyPress={this.createNew.bind(this)}/>
                 <ul>
                     <FlipMove
                         staggerDurationBy="30"
