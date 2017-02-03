@@ -68,7 +68,9 @@ ul {
 }
 
 .Dropdown {
-  z-index: 3;
+  position: static;
+  width: auto;
+  z-index: 4;
   background: #FFF;
   border: 3px solid $fuscia;
   border-radius: 3px;
@@ -76,6 +78,7 @@ ul {
   line-height: 34px;
   font-size: 13px;
   cursor: pointer;
+
 
   .placeholder {
     padding: 0 4px;

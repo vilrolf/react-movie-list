@@ -71,10 +71,9 @@ ul {
 }
 
 .Dropdown {
-  position: absolute;
+  position: static;
   z-index: 3;
   background: #FFF;
-  width: 100%;
   border: 2px solid $fuscia;
   border-radius: 3px;
   padding: 0 4px;

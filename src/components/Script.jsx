@@ -111,7 +111,8 @@ class RobotMasterList extends React.Component {
             enterLeaveAnimation: 'accordianHorizontal',
         });
     }
-    save(){
+
+    save() {
         localStorage.setItem("movies", JSON.stringify(this.state.movies));
     }
 
@@ -184,27 +185,21 @@ class RobotMasterList extends React.Component {
         this.setState({error: null});
         if (e.which === 13) {
             // finding the movie on omdb.com
-            try {
-                axios.get(`https://www.omdbapi.com/?t=` + e.target.value)
-                    .then(res => {
-                        console.log("response", res.data.response);
-                        //if(res.data.response === "True") {
-                        console.log(res.data);
-                        res.data.id = Date.now();
-                        this.setState({movies: this.state.movies.concat([res.data])});
-                        console.log(this.state.movies);
-                        this.sort();
-                        //}else {
-                        //   console.log("error!",res.data);
-                        //   this.setState({error: res.data.Error});
-                        // }
-
-                        this.save();
-                    });
-            } catch (error) {
+            let moviePromise = axios.get(`https://www.omdbapi.com/?t=` + e.target.value);
+            moviePromise.then(res => {
+                console.log("response", res.data.response);
+                //if(res.data.response === "True") {
+                console.log(res.data);
+                res.data.id = Date.now();
+                this.setState({movies: this.state.movies.concat([res.data])});
+                console.log(this.state.movies);
+                this.sort();
+                this.save();
+            });
+            moviePromise.catch(error => {
                 this.setState({error: "Something went wrong!"});
                 console.log(error);
-            }
+            });
             e.target.value = "";
         }
     }
